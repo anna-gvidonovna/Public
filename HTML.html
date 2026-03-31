@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Feedback Questionnaire | 2025/2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+    
+    <style>
+        /* --- Screen Variables & Base --- */
+        :root {
+            --bg-color: #f7f7f5;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --hairline: rgba(17, 17, 17, 0.15);
+            
+            --data-brick: #d9381e;
+            --data-pine: #2c5234;
+            --data-pine-bright: #1a7a3b; 
+            --data-steel: #3a4f66;
+            --data-ochre: #c48b36;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-weight: 250; 
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container { max-width: 940px; margin: 0 auto; padding: 0 20px; }
+
+        h1, h2, h3 { font-weight: 250; letter-spacing: -0.02em; }
+        h3 { font-size: 1.5rem; margin: 3rem 0 1.5rem 0; }
+        
+        p { 
+            font-size: 1.1rem; 
+            margin-bottom: 2rem; 
+            color: var(--text-main);
+            text-align: justify;
+            text-justify: inter-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400; 
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--hairline);
+            margin: 4rem 0;
+        }
+
+        /* --- Sticky Running Header --- */
+        .sticky-nav {
+            position: fixed;
+            top: -80px; 
+            left: 0;
+            width: 100%;
+            background-color: rgba(247, 247, 245, 0.85); 
+            border-bottom: 1px solid var(--hairline);
+            z-index: 1000;
+            transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .sticky-nav.visible { top: 0; }
+
+        .sticky-nav-inner {
+            max-width: 940px;
+            margin: 0 auto;
+            padding: 1rem 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sticky-nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .sticky-nav a, .btn-top {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .sticky-nav a:hover, .btn-top:hover { color: var(--text-muted); }
+
+        /* --- Hero Space --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero-github {
+            position: absolute;
+            top: 2rem;
+            right: 2.5rem;
+            color: var(--text-main);
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+        .hero-github:hover { opacity: 1; }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .hero .period {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-nav {
+            position: absolute;
+            bottom: 3rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        .hero-nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .hero-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--text-main);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: right;
+        }
+        .hero-nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+        section { padding: 4rem 0; }
+        section[id] { scroll-margin-top: 80px; } 
+        
+        .section-header { margin-bottom: 3rem; text-align: left; }
+        .section-header h2 { font-size: 2.5rem; }
+
+        /* --- Editorial Tables & Expand Functionality --- */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0 1rem 0;
+            font-size: 0.85rem;
+            white-space: nowrap; 
+            table-layout: fixed; 
+        }
+
+        #represent-table th:nth-child(2), 
+        #represent-table td:nth-child(2) {
+            width: 32%;
+            overflow: hidden;
+            text-overflow: ellipsis; 
+        }
+
+        .text-table {
+            white-space: normal; 
+        }
+        .text-table td {
+            vertical-align: top;
+            padding-top: 1rem;
+            line-height: 1.5;
+            white-space: normal;
+        }
+        
+        #risk-table th:nth-child(1), #risk-table td:nth-child(1) { width: 20%; }
+        #risk-table th:nth-child(2), #risk-table td:nth-child(2) { width: 20%; }
+        #risk-table th:nth-child(3), #risk-table td:nth-child(3) { width: 60%; }
+
+        #kano-table th:nth-child(1), #kano-table td:nth-child(1) { width: 15%; }
+        #kano-table th:nth-child(2), #kano-table td:nth-child(2) { width: 40%; }
+        #kano-table th:nth-child(3), #kano-table td:nth-child(3) { width: 45%; }
+        
+        #kano-results-table td { vertical-align: middle; padding-top: 0; }
+        #kano-results-table th:nth-child(1), #kano-results-table td:nth-child(1) { width: 35%; }
+        #kano-results-table th:nth-child(2), #kano-results-table td:nth-child(2) { width: 35%; }
+        #kano-results-table th:nth-child(3), #kano-results-table td:nth-child(3) { width: 30%; }
+
+        #quadrant-table th { width: 20%; }
+        #quadrant-table td { vertical-align: middle; }
+
+        th, td {
+            text-align: left;
+            padding: 0 0.5rem;
+            border-bottom: 1px solid var(--hairline);
+            height: 48px; 
+            vertical-align: middle;
+        }
+
+        th:first-child, td:first-child { padding-left: 0; }
+        th:last-child, td:last-child { padding-right: 0; }
+        
+        th {
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--text-muted);
+            font-size: 0.65rem; 
+            line-height: 1.3;   
+            height: auto;
+            padding-bottom: 1rem;
+            white-space: normal; 
+            vertical-align: bottom;
+        }
+
+        #kano-results-table td:nth-child(1) { border-bottom: none; }
+        #kano-results-table tr.group-end td:nth-child(1) { border-bottom: 1px solid var(--hairline); }
+        #kano-results-table td:nth-child(2), #kano-results-table td:nth-child(3) { border-bottom: 1px solid var(--hairline); }
+
+        .highlight-excitement {
+            color: var(--data-pine-bright) !important;
+            background-color: rgba(26, 122, 59, 0.08);
+            border-radius: 4px;
+        }
+
+        .highlight-basic {
+            color: var(--data-brick) !important;
+            background-color: rgba(217, 56, 30, 0.08); 
+            border-radius: 4px;
+        }
+
+        .td-highlight { color: var(--data-brick); font-weight: 400; }
+        .row-hidden { display: none; }
+
+        .btn-expand {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--text-main);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding-bottom: 2px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        .btn-expand:hover { opacity: 1; }
+
+        /* --- Key Thesis Textblock --- */
+        .thesis-block {
+            margin: 5rem 0;
+            padding-left: 2.5rem;
+            border-left: 2px solid var(--data-brick);
+        }
+
+        .thesis-label {
+            font-size: 0.75rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .thesis-text {
+            font-size: 1.15rem; 
+            font-weight: 400; 
+            line-height: 1.4;
+            color: var(--text-main);
+            letter-spacing: -0.01em;
+            text-align: justify;
+            text-justify: inter-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+
+        /* --- Data Visualization Container --- */
+        .chart-container {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .chart-box {
+            flex: 1;
+            min-width: 320px;
+            height: 420px;
+            background-color: transparent; 
+            padding: 1rem 0; 
+        }
+
+        /* --- Colophon Footer --- */
+        .site-footer {
+            margin-top: 4rem;
+            padding-bottom: 6rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--hairline);
+            padding-top: 3rem;
+        }
+
+        .site-footer p {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            text-align: left;
+            -webkit-hyphens: none;
+            -ms-hyphens: none;
+            hyphens: none; 
+        }
+
+        .footer-tech {
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(17, 17, 17, 0.4);
+        }
+
+        /* =========================================
+           PRINT ARCHITECTURE
+           ========================================= */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 20mm 25mm; 
+            }
+
+            body {
+                background-color: #ffffff; 
+                color: #000000;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important; 
+            }
+
+            .container { max-width: 100%; }
+
+            .hero {
+                page-break-after: always;
+                break-after: page;
+                height: 100vh; 
+            }
+
+            section {
+                page-break-after: always;
+                break-after: page;
+                padding: 0; 
+                margin-top: 2rem;
+            }
+
+            table, .thesis-block, p, h3, .chart-container {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            .chart-container {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+            }
+
+            .site-footer {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                border-top: 0.5pt solid #000;
+                margin-top: 4rem;
+            }
+
+            .hero-nav, .hero-github, .btn-expand, .sticky-nav { 
+                display: none !important;
+            }
+            
+            hr { display: none !important; }
+
+            .row-hidden {
+                display: table-row !important;
+            }
+
+            th, td { border-bottom: 0.5pt solid #000; }
+            .thesis-block { border-left: 2pt solid var(--data-brick); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="sticky-nav" id="sticky-nav">
+        <div class="sticky-nav-inner">
+            <div class="sticky-nav-links">
+                <a href="#overview">Обзор</a>
+                <a href="#analytics">Аналитика</a>
+            </div>
+            <button class="btn-top" id="btn-top" aria-label="Scroll to top">↑ Top</button>
+        </div>
+    </nav>
+
+    <header class="hero" id="hero-space">
+        <a href="https://github.com/your-repo-link" target="_blank" aria-label="View data scripts on GitHub" class="hero-github">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+        </a>
+
+        <div class="subtitle">программы высшего образования Universal University</div>
+        <h1>Student Feedback Questionnaire</h1>
+        <div class="period">отчет за осенний семестр 2025/2026</div>
+        
+        <nav class="hero-nav">
+            <a href="#overview">Обзор данных</a>
+            <a href="#analytics">Аналитика</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <section id="overview">
+            <div class="section-header">
+                <h2>Обзор данных</h2>
+            </div>
+            <p>Валидация данных – предварительный этап, который позволит нам, с некоторой долей уверенности, утверждать, что полученные результаты не просто статистический шум, а отражение социальной реальности. Внешняя валидация представляет собой проверку, насколько мы сможем обобщить полученные на основании собранной выборки результаты до выводов обо всех студентах. Внутренняя же валидация ставит перед собой задачу проверить корректность, целостность данных и очистить их от артефактов недобросовестного заполнения.</p>
+            
+            <h3>Внешняя валидация</h3>
+            <p>Проверка репрезентативности выборы и ее достаточности для обобщенных выводов с приемлемым (стандартно ±5%) уровнем погрешности.</p>
+
+            <div class="table-responsive">
+                <table id="represent-table">
+                    <thead>
+                        <tr>
+                            <th>Школа</th>
+                            <th>Программа</th>
+                            <th>Курс</th>
+                            <th>Выборка</th>
+                            <th>Совокуп-<br>ность</th>
+                            <th>Отклик (факт)</th>
+                            <th>Отклик (цель)</th>
+                            <th>Погрешность</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Scream</td>
+                            <td title="Анимация">Анимация</td>
+                            <td>1 курс</td>
+                            <td>2</td>
+                            <td>10</td>
+                            <td>20.0%</td>
+                            <td>97.7%</td>
+                            <td style="color: var(--data-brick);">± 65.33%</td>
+                        </tr>
+                        <tr>
+                            <td>Scream</td>
+                            <td title="Создание игр">Создание игр</td>
+                            <td>1 курс</td>
+                            <td>1</td>
+                            <td>9</td>
+                            <td>11.1%</td>
+                            <td>98.0%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr>
+                            <td>БВШД</td>
+                            <td title="Foundation Art and Design">Foundation Art and Design</td>
+                            <td>1 курс</td>
+                            <td>31</td>
+                            <td>108</td>
+                            <td>28.7%</td>
+                            <td>78.2%</td>
+                            <td style="color: var(--data-brick);">± 14.93%</td>
+                        </tr>
+                        <tr>
+                            <td>БВШД</td>
+                            <td title="Бренд-менеджмент и маркетинг в креативных индустриях">Бренд-менеджмент и маркетинг в креативных индустриях</td>
+                            <td>1 курс</td>
+                            <td>7</td>
+                            <td>27</td>
+                            <td>25.9%</td>
+                            <td>93.7%</td>
+                            <td style="color: var(--data-brick);">± 32.49%</td>
+                        </tr>
+                        <tr>
+                            <td>БВШД</td>
+                            <td title="Бренд-менеджмент и маркетинг в креативных индустриях">Бренд-менеджмент и маркетинг в креативных индустриях</td>
+                            <td>2 курс</td>
+                            <td>3</td>
+                            <td>19</td>
+                            <td>15.8%</td>
+                            <td>95.5%</td>
+                            <td style="color: var(--data-brick);">± 53.34%</td>
+                        </tr>
+                        
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Графический дизайн">Графический дизайн</td>
+                            <td>2 курс</td>
+                            <td>2</td>
+                            <td>11</td>
+                            <td>18.2%</td>
+                            <td>97.5%</td>
+                            <td style="color: var(--data-brick);">± 65.74%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Графический дизайн">Графический дизайн</td>
+                            <td>3 курс</td>
+                            <td>1</td>
+                            <td>21</td>
+                            <td>4.8%</td>
+                            <td>95.1%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Графический дизайн">Графический дизайн</td>
+                            <td>4 курс</td>
+                            <td>1</td>
+                            <td>10</td>
+                            <td>10.0%</td>
+                            <td>97.7%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Дизайн и архитектура интерьера">Дизайн и архитектура интерьера</td>
+                            <td>2 курс</td>
+                            <td>1</td>
+                            <td>13</td>
+                            <td>7.7%</td>
+                            <td>97.0%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Дизайн и архитектура интерьера">Дизайн и архитектура интерьера</td>
+                            <td>3 курс</td>
+                            <td>7</td>
+                            <td>7</td>
+                            <td>100.0%</td>
+                            <td>99.0%</td>
+                            <td>± 0.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Дизайн и архитектура интерьера">Дизайн и архитектура интерьера</td>
+                            <td>4 курс</td>
+                            <td>3</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Дизайн одежды и текстиля">Дизайн одежды и текстиля</td>
+                            <td>2 курс</td>
+                            <td>21</td>
+                            <td>27</td>
+                            <td>77.8%</td>
+                            <td>93.7%</td>
+                            <td style="color: var(--data-brick);">± 10.27%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Дизайн одежды и текстиля">Дизайн одежды и текстиля</td>
+                            <td>3 курс</td>
+                            <td>3</td>
+                            <td>19</td>
+                            <td>15.8%</td>
+                            <td>95.5%</td>
+                            <td style="color: var(--data-brick);">± 53.34%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Дизайн одежды и текстиля">Дизайн одежды и текстиля</td>
+                            <td>4 курс</td>
+                            <td>1</td>
+                            <td>13</td>
+                            <td>7.7%</td>
+                            <td>97.0%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Иллюстрация">Иллюстрация</td>
+                            <td>2 курс</td>
+                            <td>4</td>
+                            <td>16</td>
+                            <td>25.0%</td>
+                            <td>96.2%</td>
+                            <td style="color: var(--data-brick);">± 43.83%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Иллюстрация">Иллюстрация</td>
+                            <td>3 курс</td>
+                            <td>2</td>
+                            <td>19</td>
+                            <td>10.5%</td>
+                            <td>95.5%</td>
+                            <td style="color: var(--data-brick);">± 67.34%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Иллюстрация">Иллюстрация</td>
+                            <td>4 курс</td>
+                            <td>2</td>
+                            <td>11</td>
+                            <td>18.2%</td>
+                            <td>97.5%</td>
+                            <td style="color: var(--data-brick);">± 65.74%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Предпринимательство и продюсирование в креативных индустриях">Предпринимательство и продюсирование в креативных индустриях</td>
+                            <td>1 курс</td>
+                            <td>1</td>
+                            <td>10</td>
+                            <td>10.0%</td>
+                            <td>97.7%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Проектирование зданий и городских общественных пространств">Проектирование зданий и городских общественных пространств</td>
+                            <td>1 курс</td>
+                            <td>4</td>
+                            <td>19</td>
+                            <td>21.1%</td>
+                            <td>95.5%</td>
+                            <td style="color: var(--data-brick);">± 44.73%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Проектирование зданий и городских общественных пространств">Проектирование зданий и городских общественных пространств</td>
+                            <td>2 курс</td>
+                            <td>10</td>
+                            <td>15</td>
+                            <td>66.7%</td>
+                            <td>96.5%</td>
+                            <td style="color: var(--data-brick);">± 18.52%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Промышленный дизайн">Промышленный дизайн</td>
+                            <td>2 курс</td>
+                            <td>2</td>
+                            <td>13</td>
+                            <td>15.4%</td>
+                            <td>97.0%</td>
+                            <td style="color: var(--data-brick);">± 66.35%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Промышленный дизайн">Промышленный дизайн</td>
+                            <td>3 курс</td>
+                            <td>1</td>
+                            <td>6</td>
+                            <td>16.7%</td>
+                            <td>98.7%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Промышленный дизайн">Промышленный дизайн</td>
+                            <td>4 курс</td>
+                            <td>2</td>
+                            <td>6</td>
+                            <td>33.3%</td>
+                            <td>98.7%</td>
+                            <td style="color: var(--data-brick);">± 61.98%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Развитие креативных проектов">Развитие креативных проектов</td>
+                            <td>1 курс</td>
+                            <td>6</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Современное искусство">Современное искусство</td>
+                            <td>2 курс</td>
+                            <td>7</td>
+                            <td>17</td>
+                            <td>41.2%</td>
+                            <td>96.0%</td>
+                            <td style="color: var(--data-brick);">± 29.28%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Современное искусство">Современное искусство</td>
+                            <td>3 курс</td>
+                            <td>1</td>
+                            <td>4</td>
+                            <td>25.0%</td>
+                            <td>99.2%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>БВШД</td>
+                            <td title="Современное искусство">Современное искусство</td>
+                            <td>4 курс</td>
+                            <td>2</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МАРШ</td>
+                            <td title="Архитектура и градостроительство">Архитектура и градостроительство</td>
+                            <td>1 курс</td>
+                            <td>10</td>
+                            <td>30</td>
+                            <td>33.3%</td>
+                            <td>93.0%</td>
+                            <td style="color: var(--data-brick);">± 25.74%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МАРШ</td>
+                            <td title="Архитектура и градостроительство">Архитектура и градостроительство</td>
+                            <td>2 курс</td>
+                            <td>9</td>
+                            <td>20</td>
+                            <td>45.0%</td>
+                            <td>95.3%</td>
+                            <td style="color: var(--data-brick);">± 24.86%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МАРШ</td>
+                            <td title="Архитектура и градостроительство">Архитектура и градостроительство</td>
+                            <td>3 курс</td>
+                            <td>9</td>
+                            <td>16</td>
+                            <td>56.2%</td>
+                            <td>96.2%</td>
+                            <td style="color: var(--data-brick);">± 22.32%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МАРШ</td>
+                            <td title="Архитектура и градостроительство">Архитектура и градостроительство</td>
+                            <td>4 курс</td>
+                            <td>9</td>
+                            <td>16</td>
+                            <td>56.2%</td>
+                            <td>96.2%</td>
+                            <td style="color: var(--data-brick);">± 22.32%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МАРШ</td>
+                            <td title="Архитектура и градостроительство">Архитектура и градостроительство</td>
+                            <td>5 курс</td>
+                            <td>3</td>
+                            <td>16</td>
+                            <td>18.8%</td>
+                            <td>96.2%</td>
+                            <td style="color: var(--data-brick);">± 52.67%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШК</td>
+                            <td title="Артист драматического театра и кино">Артист драматического театра и кино</td>
+                            <td>1 курс</td>
+                            <td>1</td>
+                            <td>7</td>
+                            <td>14.3%</td>
+                            <td>98.5%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШК</td>
+                            <td title="Кинопроизводство">Кинопроизводство</td>
+                            <td>1 курс</td>
+                            <td>12</td>
+                            <td>70</td>
+                            <td>17.1%</td>
+                            <td>84.8%</td>
+                            <td style="color: var(--data-brick);">± 25.94%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШК</td>
+                            <td title="Кинопроизводство">Кинопроизводство</td>
+                            <td>2 курс</td>
+                            <td>31</td>
+                            <td>60</td>
+                            <td>51.7%</td>
+                            <td>86.7%</td>
+                            <td style="color: var(--data-brick);">± 12.34%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШК</td>
+                            <td title="Кинопроизводство">Кинопроизводство</td>
+                            <td>3 курс</td>
+                            <td>14</td>
+                            <td>29</td>
+                            <td>48.3%</td>
+                            <td>93.2%</td>
+                            <td style="color: var(--data-brick);">± 19.17%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШК</td>
+                            <td title="Кинопроизводство">Кинопроизводство</td>
+                            <td>4 курс</td>
+                            <td>1</td>
+                            <td>12</td>
+                            <td>8.3%</td>
+                            <td>97.2%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШМ</td>
+                            <td title="Компьютерная музыка и аранжировка">Компьютерная музыка и аранжировка</td>
+                            <td>1 курс</td>
+                            <td>2</td>
+                            <td>26</td>
+                            <td>7.7%</td>
+                            <td>93.9%</td>
+                            <td style="color: var(--data-brick);">± 67.90%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШМ</td>
+                            <td title="Компьютерная музыка и аранжировка">Компьютерная музыка и аранжировка</td>
+                            <td>2 курс</td>
+                            <td>4</td>
+                            <td>19</td>
+                            <td>21.1%</td>
+                            <td>95.5%</td>
+                            <td style="color: var(--data-brick);">± 44.73%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШМ</td>
+                            <td title="Компьютерная музыка и аранжировка">Компьютерная музыка и аранжировка</td>
+                            <td>3 курс</td>
+                            <td>1</td>
+                            <td>20</td>
+                            <td>5.0%</td>
+                            <td>95.3%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                        <tr class="expandable-row-rep row-hidden">
+                            <td>МШМ</td>
+                            <td title="Компьютерная музыка и аранжировка">Компьютерная музыка и аранжировка</td>
+                            <td>4 курс</td>
+                            <td>1</td>
+                            <td>11</td>
+                            <td>9.1%</td>
+                            <td>97.5%</td>
+                            <td style="color: var(--data-brick);">± 98.00%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button id="toggle-rep-btn" class="btn-expand">+ Показать все</button>
+
+            <div class="thesis-block">
+                <span class="thesis-label">Важно</span>
+                <div class="thesis-text">Данная выборка лишена репрезентативности в статистическом смысле. Все полученные на ее основе точечные оценки следует воспринимать как тенденции, но не как жесткие статистические параметры.</div>
+            </div>
+
+            <p>Проверка на смещение выборки из-за не-ответов для оценки, насколько студенты, не попавшие в выборку, могут придерживаться иных взглядов, чем те, что приняли участие в опросе.</p>
+
+            <p>Прямая оценка не-ответов невозможна, однако существующая выборка разделена на две части (ранние ответы и поздние ответы); поздние ответы рассматриваются как прокси для не-ответов.</p>
+
+            <div class="table-responsive">
+                <table id="wave-summary-table">
+                    <thead>
+                        <tr>
+                            <th>Волна</th>
+                            <th>Кол-во ответов</th>
+                            <th>NPS (среднее)</th>
+                            <th>CSI (среднее)</th>
+                            <th>p value NPS</th>
+                            <th>p value CSI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>117</td>
+                            <td>6.68</td>
+                            <td>2.89</td>
+                            <td>–</td>
+                            <td>–</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>118</td>
+                            <td>7.60</td>
+                            <td>2.94</td>
+                            <td>0.0</td>
+                            <td>0.6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="thesis-block">
+                <span class="thesis-label">Важно</span>
+                <div class="thesis-text">Значение CSI остается стабильным на протяжении всего периода опроса, в то время как значение NPS второй волны отлично от первой волны. С учетом недостаточной выборки различия в NPS по волнам делают его слишком рискованным показателем для анализа.</div>
+            </div>
+
+            <h3>Внутренняя валидация</h3>
+            <p>Внутренняя валидация представляет собой, прежде всего, поведенческий аудит и очистку выборки от артефактов недобросовестных респондентов. К этой категории мы относим тех, кто систематически дает одинаковые ответы и тратит на заполнение опроса менее полутора минут.</p>
+
+            <div class="thesis-block">
+                <span class="thesis-label">Важно</span>
+                <div class="thesis-text">Данная выборка содержит только один ответ, строго удовлетворяющий критериям недобросовестности. Он исключен из дальнейшего анализа.</div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="analytics">
+            <div class="section-header">
+                <h2>Аналитика</h2>
+            </div>
+            
+            <h3>Метрики CSI и NPS</h3>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Метрика</th>
+                            <th>Среднее значение</th>
+                            <th>Погрешность (±)</th>
+                            <th>95% доверительный интервал</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NPS (0–10)</td>
+                            <td>7.14</td>
+                            <td>± 0.272</td>
+                            <td>[6.868, 7.413]</td>
+                        </tr>
+                        <tr>
+                            <td>CSI (1–4)</td>
+                            <td>2.915</td>
+                            <td>± 0.080</td>
+                            <td>[2.835, 2.995]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>Глобальные метрики служат общим ориентиром; более надежная информация может быть получена на уровне школ. Однако и на их уровне средние показатели CSI и NPS нельзя рассматривать изолированно, без учета погрешности.</p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Школа</th>
+                            <th>Показатель</th>
+                            <th>Среднее</th>
+                            <th>Погрешность (±)</th>
+                            <th>95% ДИ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>МАРШ</td>
+                            <td>NPS</td>
+                            <td>8.025</td>
+                            <td>0.533</td>
+                            <td>[7.492, 8.558]</td>
+                        </tr>
+                        <tr>
+                            <td>МАРШ</td>
+                            <td>CSI</td>
+                            <td>2.95</td>
+                            <td>0.168</td>
+                            <td>[2.782, 3.118]</td>
+                        </tr>
+                        <tr>
+                            <td>БВШД</td>
+                            <td>NPS</td>
+                            <td>7.512</td>
+                            <td>0.339</td>
+                            <td>[7.173, 7.851]</td>
+                        </tr>
+                        <tr>
+                            <td>БВШД</td>
+                            <td>CSI</td>
+                            <td>3.072</td>
+                            <td>0.107</td>
+                            <td>[2.965, 3.179]</td>
+                        </tr>
+                        <tr>
+                            <td>МШМ</td>
+                            <td>NPS</td>
+                            <td>7.125</td>
+                            <td>1.375</td>
+                            <td>[5.750, 8.500]</td>
+                        </tr>
+                        <tr>
+                            <td>МШМ</td>
+                            <td>CSI</td>
+                            <td>2.875</td>
+                            <td>0.510</td>
+                            <td>[2.365, 3.385]</td>
+                        </tr>
+                        <tr>
+                            <td>МШК</td>
+                            <td>NPS</td>
+                            <td>5.746</td>
+                            <td>0.605</td>
+                            <td>[5.141, 6.351]</td>
+                        </tr>
+                        <tr>
+                            <td>МШК</td>
+                            <td>CSI</td>
+                            <td>2.576</td>
+                            <td>0.160</td>
+                            <td>[2.417, 2.736]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <div id="chart-nps" class="chart-box"></div>
+                <div id="chart-csi" class="chart-box"></div>
+            </div>
+
+            <div class="thesis-block">
+                <span class="thesis-label">Важно</span>
+                <div class="thesis-text">Анализ метрик NPS и CSI в разрезе школ показывает четкую стратификацию внутри университета по образовательному опыту студентов бакалавриата и магистратуры.</div>
+            </div>
+
+            <p>Точечные оценки и ширина доверительных интервалов служат относительно надежным основанием, чтобы разделить школы на три концептуальные группы.</p>
+
+            <div class="table-responsive">
+                <table id="risk-table" class="text-table">
+                    <thead>
+                        <tr>
+                            <th>Категория</th>
+                            <th>Школы</th>
+                            <th>Особенности</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Зона успеха</td>
+                            <td>БВШД, МАРШ</td>
+                            <td>МАРШ: лидер лояльности; самый высокий уровень NPS; БВШД: наибольшая удовлетворенность студентов</td>
+                        </tr>
+                        <tr>
+                            <td>Зона риска</td>
+                            <td>МШК</td>
+                            <td>Статистически значимые более низкие показатели как CSI, так и NPS по сравнению с зоной успеха</td>
+                        </tr>
+                        <tr>
+                            <td>Слепая зона</td>
+                            <td>МШМ, СКРИМ</td>
+                            <td>Низкий уровень отклика не позволяет сделать значимые выводы на основании данных выборки</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top: 5rem;">Факторы удовлетворенности и лояльности</h3>
+            
+            <p>Общие метрики CSI и NPS позволяют стратифицировать подразделения, однако не позволяют увидеть факторы, оказывающие наибольшее влияние на (не)удовлеренность и (не)лояльность студентов.</p>
+
+            <p>С помощью модели Кано возможно, во-первых, разделить все факторы на смысловые группы по особенностям их влияния на субъективную удовлетворенность, а во-вторых, оценить, какие из этих факторов вносят наибольший вклад в образовательный опыт студентов в разрезе школ.</p>
+
+            <div class="table-responsive">
+                <table id="kano-table" class="text-table">
+                    <thead>
+                        <tr>
+                            <th>Категория</th>
+                            <th>Описание</th>
+                            <th>Особенности</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Basic</strong></td>
+                            <td>Фундаментальные требования, которые воспринимаются студентами как нечто само собой разумеющееся</td>
+                            <td>Их наличие не вызывает радости, но их отсутствие или плохая работа порождают резкое недовольство</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>Удовлетворенность линейно зависит от качества функционирования этих факторов</td>
+                            <td>Чем лучше реализован фактор, тем выше удовлетворенность. Чем хуже — тем она ниже.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Excitement</strong></td>
+                            <td>Неожиданные, дополнительные бонусы, о которых студенты не просили или которых не ожидали</td>
+                            <td>Их отсутствие не вызывает негатива, но их наличие ведет к росту лояльности и превращает студентов в промоутеров</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Indifference</strong></td>
+                            <td>Никак не влияют на общую удовлетворенность, независимо от того, как они реализованы</td>
+                            <td>Студентам в значительной степени всё равно, есть это или нет, хорошо это работает или плохо</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="margin-top: 2rem;">Для студентов программ высшего образования факторы, предложенные в опросе, распределились следующим образом:</p>
+            
+            <div class="table-responsive">
+                <table id="kano-results-table" class="text-table">
+                    <thead>
+                        <tr>
+                            <th>Направление</th>
+                            <th>Фактор</th>
+                            <th>Категория</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Учебный отдел</td>
+                            <td>Coord_Help</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Coord_Info</td>
+                            <td class="highlight-excitement"><strong>Excitement</strong></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Coord_Respect</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr class="group-end">
+                            <td></td>
+                            <td>Coord_Result</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Куратор программы</td>
+                            <td>Curator_Help</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden group-end">
+                            <td></td>
+                            <td>Curator_Info</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        
+                        <tr class="expandable-row-kano row-hidden">
+                            <td>Оценивание проектов</td>
+                            <td>Grad_Criteria</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Grad_Fairness</td>
+                            <td class="highlight-basic"><strong>Basic</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden group-end">
+                            <td></td>
+                            <td>Grad_Submission</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        
+                        <tr class="expandable-row-kano row-hidden">
+                            <td>Инфраструктура университета</td>
+                            <td>Infra_Baseroom</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Infra_Classroom</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Infra_Food</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Infra_Hardware</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Infra_Library</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Infra_Software</td>
+                            <td class="highlight-excitement"><strong>Excitement</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden group-end">
+                            <td></td>
+                            <td>Infra_Wellbeing</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                        
+                        <tr class="expandable-row-kano row-hidden">
+                            <td>Содержание программы</td>
+                            <td>Prog_Contents</td>
+                            <td class="highlight-basic"><strong>Basic</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Prog_Industry</td>
+                            <td class="highlight-excitement"><strong>Excitement</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Prog_Timetable</td>
+                            <td class="highlight-basic"><strong>Basic</strong></td>
+                        </tr>
+                        <tr class="expandable-row-kano row-hidden">
+                            <td></td>
+                            <td>Prog_Workload</td>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button id="toggle-kano-btn" class="btn-expand">+ Показать все</button>
+
+            <div class="thesis-block">
+                <span class="thesis-label">Важно</span>
+                <div class="thesis-text">Текущая удовлетворенность строится на классических для университетов факторах: справедливости оценивания, содержании программ и стабильности расписания.</div>
+            </div>
+
+            <h3 style="margin-top: 5rem;">Факторы удовлетворенности по школам</h3>
+            <p>Ниже представлены матрицы Importance-Performance для каждой школы. Цветом обозначены различные типы факторов согласно модели Кано, а размер точки отражает уровень удовлетворенности (названия факторов сокращены для удобства восприятия).</p>
+
+            <div class="chart-container">
+                <div id="ipa-bvshd" class="chart-box" style="height: 480px;"></div>
+                <div id="ipa-marsh" class="chart-box" style="height: 480px;"></div>
+            </div>
+            <div class="chart-container">
+                <div id="ipa-mshk" class="chart-box" style="height: 480px;"></div>
+                <div id="ipa-mshm" class="chart-box" style="height: 480px;"></div>
+            </div>
+
+            <div class="table-responsive" style="margin-top: 3rem;">
+                <table id="quadrant-table" class="text-table">
+                    <thead>
+                        <tr>
+                            <th>Факторы</th>
+                            <th>Квадрант I высокая важность & плохая реализация </th>
+                            <th>Квадрант II: высокая важность & хорошая реализация</th>
+                            <th>Квадрант III низкая важность & плохая реализация </th>
+                            <th>Квадрант IV низкая важность & хорошая реализация</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: var(--data-brick);"><strong>Basic</strong></td>
+                            <td>сломанный фундамент</td>
+                            <td>стабильная работа</td>
+                            <td>–</td>
+                            <td>перерасход ресурсов</td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--data-pine-bright);"><strong>Excitement</strong></td>
+                            <td>упущенная возможность</td>
+                            <td>абсолютный успех</td>
+                            <td>ненужная инновация</td>
+                            <td>нереализованная возможность</td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>игнорирование</td>
+                            <td>перерасход ресурсов</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <footer class="site-footer">
+            <p>&copy; 2026 Universal University. All rights reserved.</p>
+            <p>Institutional Research & Monitoring Division.</p>
+            
+            <div class="footer-tech">
+                Rendered via Custom Reporting Layout v1.0 <br>
+                Typeset in Inter Variable by Rasmus Andersson &bull; Screen & Print Optimised
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* ====================================
+               Вспомогательная функция медианы
+               ==================================== */
+            function getMedian(arr) {
+                const valid = arr.filter(n => typeof n === 'number' && !isNaN(n) && n > 0);
+                if (valid.length === 0) return 0;
+                const sorted = [...valid].sort((a, b) => a - b);
+                const mid = Math.floor(sorted.length / 2);
+                return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+            }
+
+            /* ====================================
+               NPS & CSI Scatter Plots
+               ==================================== */
+            const schoolsNPS = ['МАРШ', 'БВШД', 'МШМ', 'МШК'];
+            const npsMeans = [8.025, 7.512, 7.125, 5.746];
+            const npsErrors = [0.533, 0.339, 1.375, 0.605];
+            
+            const traceNps = {
+                x: schoolsNPS,
+                y: npsMeans,
+                error_y: {
+                    type: 'data', array: npsErrors, visible: true,
+                    color: '#d9381e', thickness: 1.5, width: 6
+                },
+                type: 'scatter', mode: 'markers',
+                marker: { size: 8, color: '#111111', opacity: 0.8 }, 
+                name: 'Среднее NPS'
+            };
+
+            const layoutNps = {
+                title: { text: 'NPS по школам (±95% ДИ)', font: { family: 'Inter', size: 14, color: '#111111' } },
+                margin: { l: 40, r: 20, t: 50, b: 40 },
+                font: { family: 'Inter', size: 11, color: '#555555' },
+                paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+                xaxis: { showgrid: false, zeroline: false },
+                yaxis: { showgrid: true, gridcolor: 'rgba(17,17,17,0.1)', zeroline: false }
+            };
+
+            Plotly.newPlot('chart-nps', [traceNps], layoutNps, {displayModeBar: false, responsive: true});
+
+            const csiMeans = [2.950, 3.072, 2.875, 2.576];
+            const csiErrors = [0.168, 0.107, 0.510, 0.160];
+
+            const traceCsi = {
+                x: schoolsNPS,
+                y: csiMeans,
+                error_y: {
+                    type: 'data', array: csiErrors, visible: true,
+                    color: '#d9381e', thickness: 1.5, width: 6
+                },
+                type: 'scatter', mode: 'markers',
+                marker: { size: 8, color: '#111111', opacity: 0.8 },
+                name: 'Среднее CSI'
+            };
+
+            const layoutCsi = {
+                title: { text: 'CSI по школам (±95% ДИ)', font: { family: 'Inter', size: 14, color: '#111111' } },
+                margin: { l: 40, r: 20, t: 50, b: 40 },
+                font: { family: 'Inter', size: 11, color: '#555555' },
+                paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+                xaxis: { showgrid: false, zeroline: false },
+                yaxis: { showgrid: true, gridcolor: 'rgba(17,17,17,0.1)', zeroline: false }
+            };
+
+            Plotly.newPlot('chart-csi', [traceCsi], layoutCsi, {displayModeBar: false, responsive: true});
+
+
+            /* ====================================
+               Importance-Performance (IPA) Matrices (С имитацией ggplot)
+               ==================================== */
+            const ipaData = {
+              "global_med_x": 63.28,
+              "global_med_y": 0.282,
+              "data": {
+                "БВШД": [
+                  { "x": [65.75, 73.0, 70.33], "y": [0.457, 0.35, 0.268], "text": ["Gr_Fair", "Prg_Cont", "Prg_Time"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": [20, 16.5, 14], "color": "#d9381e", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#d9381e" }, "hoverinfo": "text+x+y" },
+                  { "x": [70.33, 49.75, 69.67], "y": [0.275, 0.272, 0.288], "text": ["Crd_Info", "Inf_SW", "Prg_Ind"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": [14.2, 14.1, 14.6], "color": "#1a7a3b", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#1a7a3b" }, "hoverinfo": "text+x+y" },
+                  { "x": [80.0, 83.67, 75.67, 79.0, 70.67, 64.25, 64.75, 64.0, 54.0, 45.0, 52.25, 72.0, 62.25, 61.33], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["Crd_Help", "Crd_Resp", "Crd_Res", "Cur_Help", "Cur_Info", "Gr_Crit", "Gr_Sub", "Inf_Base", "Inf_Class", "Inf_Food", "Inf_HW", "Inf_Lib", "Inf_WB", "Prg_Work"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": [6,6,6,6,6,6,6,6,6,6,6,6,6,6], "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
+                ],
+                "МАРШ": [
+                  { "x": [47.5, 72.22, 82.22], "y": [0.457, 0.35, 0.268], "text": ["Gr_Fair", "Prg_Cont", "Prg_Time"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": [20, 16.5, 14], "color": "#d9381e", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#d9381e" }, "hoverinfo": "text+x+y" },
+                  { "x": [67.78, 46.67, 78.89], "y": [0.275, 0.272, 0.288], "text": ["Crd_Info", "Inf_SW", "Prg_Ind"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": [14.2, 14.1, 14.6], "color": "#1a7a3b", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#1a7a3b" }, "hoverinfo": "text+x+y" },
+                  { "x": [71.11, 72.22, 61.11, 71.11, 63.33, 52.5, 51.67, 70.83, 56.67, 40.0, 45.83, 62.5, 56.67, 66.67], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["Crd_Help", "Crd_Resp", "Crd_Res", "Cur_Help", "Cur_Info", "Gr_Crit", "Gr_Sub", "Inf_Base", "Inf_Class", "Inf_Food", "Inf_HW", "Inf_Lib", "Inf_WB", "Prg_Work"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": [6,6,6,6,6,6,6,6,6,6,6,6,6,6], "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
+                ],
+                "МШК": [
+                  { "x": [50.6, 57.94, 61.11], "y": [0.457, 0.35, 0.268], "text": ["Gr_Fair", "Prg_Cont", "Prg_Time"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": [20, 16.5, 14], "color": "#d9381e", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#d9381e" }, "hoverinfo": "text+x+y" },
+                  { "x": [40.48, 48.81, 65.87], "y": [0.275, 0.272, 0.288], "text": ["Crd_Info", "Inf_SW", "Prg_Ind"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": [14.2, 14.1, 14.6], "color": "#1a7a3b", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#1a7a3b" }, "hoverinfo": "text+x+y" },
+                  { "x": [67.46, 81.75, 65.08, 72.22, 52.38, 45.83, 42.26, 59.52, 58.93, 31.55, 50.0, 55.36, 51.19, 58.73], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["Crd_Help", "Crd_Resp", "Crd_Res", "Cur_Help", "Cur_Info", "Gr_Crit", "Gr_Sub", "Inf_Base", "Inf_Class", "Inf_Food", "Inf_HW", "Inf_Lib", "Inf_WB", "Prg_Work"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": [6,6,6,6,6,6,6,6,6,6,6,6,6,6], "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
+                ],
+                "МШМ": [
+                  { "x": [67.86, 71.43, 66.67], "y": [0.457, 0.35, 0.268], "text": ["Gr_Fair", "Prg_Cont", "Prg_Time"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": [20, 16.5, 14], "color": "#d9381e", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#d9381e" }, "hoverinfo": "text+x+y" },
+                  { "x": [52.38, 46.43, 80.95], "y": [0.275, 0.272, 0.288], "text": ["Crd_Info", "Inf_SW", "Prg_Ind"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": [14.2, 14.1, 14.6], "color": "#1a7a3b", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#1a7a3b" }, "hoverinfo": "text+x+y" },
+                  { "x": [66.67, 95.24, 61.9, 90.48, 76.19, 57.14, 60.71, 67.86, 67.86, 46.43, 50.0, 67.86, 57.14, 71.43], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["Crd_Help", "Crd_Resp", "Crd_Res", "Cur_Help", "Cur_Info", "Gr_Crit", "Gr_Sub", "Inf_Base", "Inf_Class", "Inf_Food", "Inf_HW", "Inf_Lib", "Inf_WB", "Prg_Work"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": [6,6,6,6,6,6,6,6,6,6,6,6,6,6], "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
+                ]
+              }
+            };
+
+            const ipaSchools = ['БВШД', 'МАРШ', 'МШК', 'МШМ'];
+            const ipaDivs = ['ipa-bvshd', 'ipa-marsh', 'ipa-mshk', 'ipa-mshm'];
+            
+            const medX = ipaData.global_med_x;
+            const medY = ipaData.global_med_y;
+
+            ipaSchools.forEach((school, index) => {
+                const traces = ipaData.data[school];
+
+                const layoutIPA = {
+                    title: { text: `Матрица IPA: ${school}`, font: { family: 'Inter', size: 14, color: '#111111' } },
+                    margin: { l: 45, r: 20, t: 40, b: 45 },
+                    font: { family: 'Inter', size: 10, color: '#555555' },
+                    paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+                    xaxis: { title: 'Качество реализации', showgrid: true, gridcolor: 'rgba(17,17,17,0.05)', zeroline: false },
+                    yaxis: { title: 'Важность', showgrid: true, gridcolor: 'rgba(17,17,17,0.05)', zeroline: false, rangemode: 'tozero' },
+                    showlegend: false,
+                    shapes: [
+                        { type: 'line', x0: medX, x1: medX, y0: 0, y1: 1, xref: 'x', yref: 'paper', line: {color: '#808080', dash: 'dash', width: 1.5} },
+                        { type: 'line', x0: 0, x1: 1, y0: medY, y1: medY, xref: 'paper', yref: 'y', line: {color: '#808080', dash: 'dash', width: 1.5} }
+                    ]
+                };
+
+                Plotly.newPlot(ipaDivs[index], traces, layoutIPA, {displayModeBar: false, responsive: true});
+            });
+
+
+            /* ====================================
+               Expandable Tables Logic
+               ==================================== */
+            const toggleRepBtn = document.getElementById('toggle-rep-btn');
+            const hiddenRepRows = document.querySelectorAll('.expandable-row-rep');
+            let isRepExpanded = false;
+
+            if(toggleRepBtn) {
+                toggleRepBtn.addEventListener('click', () => {
+                    isRepExpanded = !isRepExpanded;
+                    hiddenRepRows.forEach(row => {
+                        if (isRepExpanded) {
+                            row.classList.remove('row-hidden');
+                        } else {
+                            row.classList.add('row-hidden');
+                        }
+                    });
+                    toggleRepBtn.innerText = isRepExpanded ? '– Скрыть' : '+ Показать все';
+                });
+            }
+
+            const toggleKanoBtn = document.getElementById('toggle-kano-btn');
+            const hiddenKanoRows = document.querySelectorAll('.expandable-row-kano');
+            let isKanoExpanded = false;
+
+            if(toggleKanoBtn) {
+                toggleKanoBtn.addEventListener('click', () => {
+                    isKanoExpanded = !isKanoExpanded;
+                    hiddenKanoRows.forEach(row => {
+                        if (isKanoExpanded) {
+                            row.classList.remove('row-hidden');
+                        } else {
+                            row.classList.add('row-hidden');
+                        }
+                    });
+                    toggleKanoBtn.innerText = isKanoExpanded ? '– Скрыть' : '+ Показать все';
+                });
+            }
+
+            /* ====================================
+               Sticky Header Logic
+               ==================================== */
+            const stickyNav = document.getElementById('sticky-nav');
+            const btnTop = document.getElementById('btn-top');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > window.innerHeight * 0.9) {
+                    stickyNav.classList.add('visible');
+                } else {
+                    stickyNav.classList.remove('visible');
+                }
+            });
+
+            btnTop.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
