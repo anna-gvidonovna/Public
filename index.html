@@ -21,9 +21,12 @@
             
             --data-brick: #d9381e;
             --data-pine: #2c5234;
-            --data-pine-bright: #1a7a3b; 
             --data-steel: #3a4f66;
             --data-ochre: #c48b36;
+            
+            /* Цвета Кано: нейтральные */
+            --kano-basic: var(--data-steel);
+            --kano-excitement: var(--data-ochre);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -271,18 +274,18 @@
         #kano-results-table td:nth-child(2), #kano-results-table td:nth-child(3) { border-bottom: 1px solid var(--hairline); }
 
         .highlight-excitement {
-            color: var(--data-pine-bright) !important;
-            background-color: rgba(26, 122, 59, 0.08);
+            color: var(--kano-excitement) !important;
+            background-color: rgba(196, 139, 54, 0.12);
             border-radius: 4px;
         }
 
         .highlight-basic {
-            color: var(--data-brick) !important;
-            background-color: rgba(217, 56, 30, 0.08); 
+            color: var(--kano-basic) !important;
+            background-color: rgba(58, 79, 102, 0.08); 
             border-radius: 4px;
         }
 
-        .td-highlight { color: var(--data-brick); font-weight: 400; }
+        .td-highlight { color: var(--kano-basic); font-weight: 400; }
         .row-hidden { display: none; }
 
         .btn-expand {
@@ -307,7 +310,7 @@
         .thesis-block {
             margin: 5rem 0;
             padding-left: 2.5rem;
-            border-left: 2px solid var(--data-brick);
+            border-left: 2px solid var(--data-steel);
         }
 
         .thesis-label {
@@ -340,12 +343,40 @@
             margin: 2rem 0;
             flex-wrap: wrap;
         }
+        .vertical-charts {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            width: 100%;
+        }
+        .chart-group {
+            display: flex;
+            flex-direction: column;
+        }
         .chart-box {
             flex: 1;
             min-width: 320px;
             height: 420px;
             background-color: transparent; 
             padding: 1rem 0; 
+        }
+        .chart-box-large {
+            height: 480px;
+            width: 100%;
+        }
+        .chart-summary {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--hairline);
+            line-height: 1.5;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        .chart-summary strong {
+            font-weight: 400;
+            letter-spacing: 0.02em;
         }
 
         /* --- Colophon Footer --- */
@@ -406,14 +437,14 @@
                 margin-top: 2rem;
             }
 
-            table, .thesis-block, p, h3, .chart-container {
+            table, .thesis-block, p, h3, .chart-container, .chart-group {
                 page-break-inside: avoid;
                 break-inside: avoid;
             }
 
             .chart-container {
                 display: flex !important;
-                flex-wrap: nowrap !important;
+                flex-direction: column !important;
             }
 
             .site-footer {
@@ -434,7 +465,7 @@
             }
 
             th, td { border-bottom: 0.5pt solid #000; }
-            .thesis-block { border-left: 2pt solid var(--data-brick); }
+            .thesis-block { border-left: 2pt solid var(--data-steel); }
         }
 
     </style>
@@ -973,6 +1004,10 @@
                 <h2>Аналитика</h2>
             </div>
             
+            <p style="margin-bottom: 3rem; color: var(--text-muted);">
+                В связи с высокой долей не-ответов и выявленным смещением выборки (non-response bias), расчет классического индекса NPS сопряжен с высоким риском искажения результатов. Для обеспечения статистической надежности мы рассматриваем данный показатель как непрерывную переменную: готовность порекомендовать программу, измеряемую по шкале от 0 до 10.
+            </p>
+
             <h3>Метрики CSI и NPS</h3>
             
             <div class="table-responsive">
@@ -1134,7 +1169,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Basic</strong></td>
+                            <td><strong style="color: var(--kano-basic);">Basic</strong></td>
                             <td>Фундаментальные требования, которые воспринимаются студентами как нечто само собой разумеющееся</td>
                             <td>Их наличие не вызывает радости, но их отсутствие или плохая работа порождают резкое недовольство</td>
                         </tr>
@@ -1144,12 +1179,12 @@
                             <td>Чем лучше реализован фактор, тем выше удовлетворенность. Чем хуже — тем она ниже.</td>
                         </tr>
                         <tr>
-                            <td><strong>Excitement</strong></td>
+                            <td><strong style="color: var(--kano-excitement);">Excitement</strong></td>
                             <td>Неожиданные, дополнительные бонусы, о которых студенты не просили или которых не ожидали</td>
                             <td>Их отсутствие не вызывает негатива, но их наличие ведет к росту лояльности и превращает студентов в промоутеров</td>
                         </tr>
                         <tr>
-                            <td><strong>Indifference</strong></td>
+                            <td><strong style="color: var(--text-muted);">Indifference</strong></td>
                             <td>Никак не влияют на общую удовлетворенность, независимо от того, как они реализованы</td>
                             <td>Студентам в значительной степени всё равно, есть это или нет, хорошо это работает или плохо</td>
                         </tr>
@@ -1171,106 +1206,106 @@
                     <tbody>
                         <tr>
                             <td>Учебный отдел</td>
-                            <td>Coord_Help</td>
+                            <td>готовность координатора помочь</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td>Coord_Info</td>
+                            <td>своевременное информирование координатором</td>
                             <td class="highlight-excitement"><strong>Excitement</strong></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td>Coord_Respect</td>
+                            <td>уважительное отношение координатора</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr class="group-end">
                             <td></td>
-                            <td>Coord_Result</td>
+                            <td>результативность действий координатора</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         
                         <tr>
                             <td>Куратор программы</td>
-                            <td>Curator_Help</td>
+                            <td>готовность куратора помочь</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden group-end">
                             <td></td>
-                            <td>Curator_Info</td>
+                            <td>информирование куратором</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         
                         <tr class="expandable-row-kano row-hidden">
                             <td>Оценивание проектов</td>
-                            <td>Grad_Criteria</td>
+                            <td>предоставление критериев оценивания</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Grad_Fairness</td>
+                            <td>объективность оценивания</td>
                             <td class="highlight-basic"><strong>Basic</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden group-end">
                             <td></td>
-                            <td>Grad_Submission</td>
+                            <td>наличие порядка и сроков сдачи</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         
                         <tr class="expandable-row-kano row-hidden">
                             <td>Инфраструктура университета</td>
-                            <td>Infra_Baseroom</td>
+                            <td>комфорт пребывания в мастерских</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Infra_Classroom</td>
+                            <td>комфорт пребывания в аудиториях</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Infra_Food</td>
+                            <td>доступность и качество еды</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Infra_Hardware</td>
+                            <td>работоспособность оборудования</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Infra_Library</td>
+                            <td>доступность библиотеки</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Infra_Software</td>
+                            <td>работоспособность ПО</td>
                             <td class="highlight-excitement"><strong>Excitement</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden group-end">
                             <td></td>
-                            <td>Infra_Wellbeing</td>
+                            <td>качество работы сервиса Wellbeing</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                         
                         <tr class="expandable-row-kano row-hidden">
                             <td>Содержание программы</td>
-                            <td>Prog_Contents</td>
+                            <td>содержание дисциплин</td>
                             <td class="highlight-basic"><strong>Basic</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Prog_Industry</td>
+                            <td>связь дисциплин с профессией</td>
                             <td class="highlight-excitement"><strong>Excitement</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Prog_Timetable</td>
+                            <td>объем аудиторных занятий</td>
                             <td class="highlight-basic"><strong>Basic</strong></td>
                         </tr>
                         <tr class="expandable-row-kano row-hidden">
                             <td></td>
-                            <td>Prog_Workload</td>
+                            <td>нагрузка по самостоятельной работе</td>
                             <td style="color: var(--text-muted);"><strong>Indifferent</strong></td>
                         </tr>
                     </tbody>
@@ -1284,38 +1319,61 @@
             </div>
 
             <h3 style="margin-top: 5rem;">Факторы удовлетворенности по школам</h3>
-            <p>Ниже представлены матрицы Importance-Performance для каждой школы. Цветом обозначены различные типы факторов согласно модели Кано, а размер точки отражает уровень удовлетворенности (названия факторов сокращены для удобства восприятия).</p>
+            <p>Ниже представлены матрицы Importance-Performance для каждой школы. По оси Х отложено среднее качество реализации каждого из академических или операционных аспектов; по оси Y отложена важность каждого аспекта для общей удовлетворенности (корреляция с CSI).</p>
 
-            <div class="chart-container">
-                <div id="ipa-bvshd" class="chart-box" style="height: 480px;"></div>
-                <div id="ipa-marsh" class="chart-box" style="height: 480px;"></div>
-            </div>
-            <div class="chart-container">
-                <div id="ipa-mshk" class="chart-box" style="height: 480px;"></div>
-                <div id="ipa-mshm" class="chart-box" style="height: 480px;"></div>
+            <div class="vertical-charts">
+                
+                <div class="chart-group">
+                    <div id="ipa-bvshd" class="chart-box-large"></div>
+                    <div class="chart-summary">
+                        Практически все факторы удовлетворенности, как basic, так и excitement, хорошо реализуются, закрывают фундаментальные образовательные и сервисные потребности студентов и, в итоге, создают высокий уровень удовлетворенности. Единственный фактор, требующий внимания, – это работоспособность ПО: он находится на границе квадрантов, что позволяет трактовать его как «упущенную возможность» (нечто важное, но недостаточно качественно реализованное; если это будет реализовано качественно, это приведет к вау-эффекту со стороны студентов).
+                    </div>
+                </div>
+
+                <div class="chart-group">
+                    <div id="ipa-marsh" class="chart-box-large"></div>
+                    <div class="chart-summary">
+                        Профиль очень сходен с БВШД, с единственным и критически важным исключением: объективность оценивания (базовый фактор) реализована недостаточно хорошо, при огромной воспринимаемой важности со стороны студентов.
+                    </div>
+                </div>
+
+                <div class="chart-group">
+                    <div id="ipa-mshk" class="chart-box-large"></div>
+                    <div class="chart-summary">
+                        Сложная ситуация, где все три базовых фактора лежат в квадранте I – то есть, реализованы недостаточно. Фактически единственное, что компенсирует подобный перекос, это excitement-фактор связи программы с индустрией, профессией, который реализован в достаточной степени и создает некоторый вау-эффект.
+                    </div>
+                </div>
+
+                <div class="chart-group">
+                    <div id="ipa-mshm" class="chart-box-large"></div>
+                    <div class="chart-summary">
+                        Профиль школы потенциально сходен с БВШД (за исключением коммуникации), однако малое количество ответивших на опрос заставляет поместить ее в зону слепого пятна – где данные есть, однако погрешность столь велика, что сделать какие-либо уверенные выводы нельзя.
+                    </div>
+                </div>
+
             </div>
 
-            <div class="table-responsive" style="margin-top: 3rem;">
+            <div class="table-responsive" style="margin-top: 5rem;">
                 <table id="quadrant-table" class="text-table">
                     <thead>
                         <tr>
                             <th>Факторы</th>
-                            <th>Квадрант I высокая важность & плохая реализация </th>
+                            <th>Квадрант I: высокая важность & плохая реализация </th>
                             <th>Квадрант II: высокая важность & хорошая реализация</th>
-                            <th>Квадрант III низкая важность & плохая реализация </th>
-                            <th>Квадрант IV низкая важность & хорошая реализация</th>
+                            <th>Квадрант III: низкая важность & плохая реализация </th>
+                            <th>Квадрант IV: низкая важность & хорошая реализация</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="color: var(--data-brick);"><strong>Basic</strong></td>
+                            <td style="color: var(--kano-basic);"><strong>Basic</strong></td>
                             <td>сломанный фундамент</td>
                             <td>стабильная работа</td>
                             <td>–</td>
                             <td>перерасход ресурсов</td>
                         </tr>
                         <tr>
-                            <td style="color: var(--data-pine-bright);"><strong>Excitement</strong></td>
+                            <td style="color: var(--kano-excitement);"><strong>Excitement</strong></td>
                             <td>упущенная возможность</td>
                             <td>абсолютный успех</td>
                             <td>ненужная инновация</td>
@@ -1350,7 +1408,7 @@
         document.addEventListener('DOMContentLoaded', () => {
 
             /* ====================================
-               Вспомогательная функция медианы
+               Вспомогательные функции
                ==================================== */
             function getMedian(arr) {
                 const valid = arr.filter(n => typeof n === 'number' && !isNaN(n) && n > 0);
@@ -1359,6 +1417,25 @@
                 const mid = Math.floor(sorted.length / 2);
                 return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
             }
+
+            function wrapLabel(label) {
+                const words = label.split(' ');
+                let result = '';
+                let lineLen = 0;
+                for (let word of words) {
+                    if (lineLen + word.length > 20 && lineLen > 0) {
+                        result += '<br>';
+                        lineLen = 0;
+                    } else if (lineLen > 0) {
+                        result += ' ';
+                        lineLen += 1;
+                    }
+                    result += word;
+                    lineLen += word.length;
+                }
+                return result;
+            }
+
 
             /* ====================================
                NPS & CSI Scatter Plots
@@ -1418,31 +1495,31 @@
 
 
             /* ====================================
-               Importance-Performance (IPA) Matrices (С имитацией ggplot)
+               Importance-Performance (IPA) Matrices 
                ==================================== */
             const ipaData = {
               "global_med_x": 63.28,
               "global_med_y": 0.282,
               "data": {
                 "БВШД": [
-                  { "x": [65.75, 73.0, 70.33], "y": [0.457, 0.35, 0.268], "text": ["Gr_Fair", "Prg_Cont", "Prg_Time"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": [20, 16.5, 14], "color": "#d9381e", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#d9381e" }, "hoverinfo": "text+x+y" },
-                  { "x": [70.33, 49.75, 69.67], "y": [0.275, 0.272, 0.288], "text": ["Crd_Info", "Inf_SW", "Prg_Ind"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": [14.2, 14.1, 14.6], "color": "#1a7a3b", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#1a7a3b" }, "hoverinfo": "text+x+y" },
-                  { "x": [80.0, 83.67, 75.67, 79.0, 70.67, 64.25, 64.75, 64.0, 54.0, 45.0, 52.25, 72.0, 62.25, 61.33], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["Crd_Help", "Crd_Resp", "Crd_Res", "Cur_Help", "Cur_Info", "Gr_Crit", "Gr_Sub", "Inf_Base", "Inf_Class", "Inf_Food", "Inf_HW", "Inf_Lib", "Inf_WB", "Prg_Work"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": [6,6,6,6,6,6,6,6,6,6,6,6,6,6], "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
+                  { "x": [65.75, 73.0, 70.33], "y": [0.457, 0.35, 0.268], "text": ["объективность оценивания", "содержание дисциплин", "объем аудиторных занятий"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": 8, "color": "#3a4f66", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#3a4f66" }, "hoverinfo": "text+x+y" },
+                  { "x": [70.33, 49.75, 69.67], "y": [0.275, 0.272, 0.288], "text": ["своевременное информирование координатором", "работоспособность ПО", "связь дисциплин с профессией"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": 8, "color": "#c48b36", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#c48b36" }, "hoverinfo": "text+x+y" },
+                  { "x": [80.0, 83.67, 75.67, 79.0, 70.67, 64.25, 64.75, 64.0, 54.0, 45.0, 52.25, 72.0, 62.25, 61.33], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["готовность координатора помочь", "уважительное отношение координатора", "результативность действий координатора", "готовность куратора помочь", "информирование куратором", "предоставление критериев оценивания", "наличие порядка и сроков сдачи", "комфорт пребывания в мастерских", "комфорт пребывания в аудиториях", "доступность и качество еды", "работоспособность оборудования", "доступность библиотеки", "качество работы сервиса Wellbeing", "нагрузка по самостоятельной работе"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": 8, "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
                 ],
                 "МАРШ": [
-                  { "x": [47.5, 72.22, 82.22], "y": [0.457, 0.35, 0.268], "text": ["Gr_Fair", "Prg_Cont", "Prg_Time"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": [20, 16.5, 14], "color": "#d9381e", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#d9381e" }, "hoverinfo": "text+x+y" },
-                  { "x": [67.78, 46.67, 78.89], "y": [0.275, 0.272, 0.288], "text": ["Crd_Info", "Inf_SW", "Prg_Ind"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": [14.2, 14.1, 14.6], "color": "#1a7a3b", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#1a7a3b" }, "hoverinfo": "text+x+y" },
-                  { "x": [71.11, 72.22, 61.11, 71.11, 63.33, 52.5, 51.67, 70.83, 56.67, 40.0, 45.83, 62.5, 56.67, 66.67], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["Crd_Help", "Crd_Resp", "Crd_Res", "Cur_Help", "Cur_Info", "Gr_Crit", "Gr_Sub", "Inf_Base", "Inf_Class", "Inf_Food", "Inf_HW", "Inf_Lib", "Inf_WB", "Prg_Work"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": [6,6,6,6,6,6,6,6,6,6,6,6,6,6], "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
+                  { "x": [47.5, 72.22, 82.22], "y": [0.457, 0.35, 0.268], "text": ["объективность оценивания", "содержание дисциплин", "объем аудиторных занятий"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": 8, "color": "#3a4f66", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#3a4f66" }, "hoverinfo": "text+x+y" },
+                  { "x": [67.78, 46.67, 78.89], "y": [0.275, 0.272, 0.288], "text": ["своевременное информирование координатором", "работоспособность ПО", "связь дисциплин с профессией"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": 8, "color": "#c48b36", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#c48b36" }, "hoverinfo": "text+x+y" },
+                  { "x": [71.11, 72.22, 61.11, 71.11, 63.33, 52.5, 51.67, 70.83, 56.67, 40.0, 45.83, 62.5, 56.67, 66.67], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["готовность координатора помочь", "уважительное отношение координатора", "результативность действий координатора", "готовность куратора помочь", "информирование куратором", "предоставление критериев оценивания", "наличие порядка и сроков сдачи", "комфорт пребывания в мастерских", "комфорт пребывания в аудиториях", "доступность и качество еды", "работоспособность оборудования", "доступность библиотеки", "качество работы сервиса Wellbeing", "нагрузка по самостоятельной работе"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": 8, "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
                 ],
                 "МШК": [
-                  { "x": [50.6, 57.94, 61.11], "y": [0.457, 0.35, 0.268], "text": ["Gr_Fair", "Prg_Cont", "Prg_Time"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": [20, 16.5, 14], "color": "#d9381e", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#d9381e" }, "hoverinfo": "text+x+y" },
-                  { "x": [40.48, 48.81, 65.87], "y": [0.275, 0.272, 0.288], "text": ["Crd_Info", "Inf_SW", "Prg_Ind"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": [14.2, 14.1, 14.6], "color": "#1a7a3b", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#1a7a3b" }, "hoverinfo": "text+x+y" },
-                  { "x": [67.46, 81.75, 65.08, 72.22, 52.38, 45.83, 42.26, 59.52, 58.93, 31.55, 50.0, 55.36, 51.19, 58.73], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["Crd_Help", "Crd_Resp", "Crd_Res", "Cur_Help", "Cur_Info", "Gr_Crit", "Gr_Sub", "Inf_Base", "Inf_Class", "Inf_Food", "Inf_HW", "Inf_Lib", "Inf_WB", "Prg_Work"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": [6,6,6,6,6,6,6,6,6,6,6,6,6,6], "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
+                  { "x": [50.6, 57.94, 61.11], "y": [0.457, 0.35, 0.268], "text": ["объективность оценивания", "содержание дисциплин", "объем аудиторных занятий"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": 8, "color": "#3a4f66", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#3a4f66" }, "hoverinfo": "text+x+y" },
+                  { "x": [40.48, 48.81, 65.87], "y": [0.275, 0.272, 0.288], "text": ["своевременное информирование координатором", "работоспособность ПО", "связь дисциплин с профессией"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": 8, "color": "#c48b36", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#c48b36" }, "hoverinfo": "text+x+y" },
+                  { "x": [67.46, 81.75, 65.08, 72.22, 52.38, 45.83, 42.26, 59.52, 58.93, 31.55, 50.0, 55.36, 51.19, 58.73], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["готовность координатора помочь", "уважительное отношение координатора", "результативность действий координатора", "готовность куратора помочь", "информирование куратором", "предоставление критериев оценивания", "наличие порядка и сроков сдачи", "комфорт пребывания в мастерских", "комфорт пребывания в аудиториях", "доступность и качество еды", "работоспособность оборудования", "доступность библиотеки", "качество работы сервиса Wellbeing", "нагрузка по самостоятельной работе"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": 8, "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
                 ],
                 "МШМ": [
-                  { "x": [67.86, 71.43, 66.67], "y": [0.457, 0.35, 0.268], "text": ["Gr_Fair", "Prg_Cont", "Prg_Time"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": [20, 16.5, 14], "color": "#d9381e", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#d9381e" }, "hoverinfo": "text+x+y" },
-                  { "x": [52.38, 46.43, 80.95], "y": [0.275, 0.272, 0.288], "text": ["Crd_Info", "Inf_SW", "Prg_Ind"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": [14.2, 14.1, 14.6], "color": "#1a7a3b", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#1a7a3b" }, "hoverinfo": "text+x+y" },
-                  { "x": [66.67, 95.24, 61.9, 90.48, 76.19, 57.14, 60.71, 67.86, 67.86, 46.43, 50.0, 67.86, 57.14, 71.43], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["Crd_Help", "Crd_Resp", "Crd_Res", "Cur_Help", "Cur_Info", "Gr_Crit", "Gr_Sub", "Inf_Base", "Inf_Class", "Inf_Food", "Inf_HW", "Inf_Lib", "Inf_WB", "Prg_Work"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": [6,6,6,6,6,6,6,6,6,6,6,6,6,6], "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
+                  { "x": [67.86, 71.43, 66.67], "y": [0.457, 0.35, 0.268], "text": ["объективность оценивания", "содержание дисциплин", "объем аудиторных занятий"], "mode": "markers+text", "type": "scatter", "name": "Basic", "marker": { "size": 8, "color": "#3a4f66", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#3a4f66" }, "hoverinfo": "text+x+y" },
+                  { "x": [52.38, 46.43, 80.95], "y": [0.275, 0.272, 0.288], "text": ["своевременное информирование координатором", "работоспособность ПО", "связь дисциплин с профессией"], "mode": "markers+text", "type": "scatter", "name": "Excitement", "marker": { "size": 8, "color": "#c48b36", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "#c48b36" }, "hoverinfo": "text+x+y" },
+                  { "x": [66.67, 95.24, 61.9, 90.48, 76.19, 57.14, 60.71, 67.86, 67.86, 46.43, 50.0, 67.86, 57.14, 71.43], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "text": ["готовность координатора помочь", "уважительное отношение координатора", "результативность действий координатора", "готовность куратора помочь", "информирование куратором", "предоставление критериев оценивания", "наличие порядка и сроков сдачи", "комфорт пребывания в мастерских", "комфорт пребывания в аудиториях", "доступность и качество еды", "работоспособность оборудования", "доступность библиотеки", "качество работы сервиса Wellbeing", "нагрузка по самостоятельной работе"], "mode": "markers+text", "type": "scatter", "name": "Indifferent", "marker": { "size": 8, "color": "rgba(17, 17, 17, 0.3)", "opacity": 0.8, "line": { "width": 1, "color": "#fff" } }, "textposition": "top center", "textfont": { "family": "Inter", "size": 9, "color": "rgba(17, 17, 17, 0.4)" }, "hoverinfo": "text+x+y" }
                 ]
               }
             };
@@ -1453,11 +1530,23 @@
             const medX = ipaData.global_med_x;
             const medY = ipaData.global_med_y;
 
+            const activePositions = ['top center', 'bottom center', 'middle right', 'top left', 'bottom right'];
+
             ipaSchools.forEach((school, index) => {
                 const traces = ipaData.data[school];
+                let pointCounter = 0;
+
+                traces.forEach(trace => {
+                    trace.text = trace.text.map(wrapLabel);
+                    if (trace.name === 'Basic' || trace.name === 'Excitement') {
+                        trace.textposition = trace.x.map(() => activePositions[pointCounter++ % activePositions.length]);
+                    } else {
+                        trace.textposition = 'bottom center';
+                    }
+                });
 
                 const layoutIPA = {
-                    title: { text: `Матрица IPA: ${school}`, font: { family: 'Inter', size: 14, color: '#111111' } },
+                    title: { text: school, font: { family: 'Inter', size: 14, color: '#111111' } },
                     margin: { l: 45, r: 20, t: 40, b: 45 },
                     font: { family: 'Inter', size: 10, color: '#555555' },
                     paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
